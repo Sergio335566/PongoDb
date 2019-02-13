@@ -1,0 +1,30 @@
+{
+  "name": "pongodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "http-server src/front -c5 -",
+    "start:server": "nodemon src/server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/damoebius/pongodb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/damoebius/pongodb/issues"
+  },
+  "homepage": "https://gitlab.com/damoebius/pongodb#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "http-server": "^0.11.1",
+    "mongodb": "^3.1.13",
+    "nodemon": "^1.18.10",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0"
+  }
+}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"></script>
+  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+</head>
+
+<body>
+  <!-- <div id="messageDiv"></div> -->
+
+  <canvas id="demoCanvas" width="1000" height="700"></canvas>
+  <script>
+  var stage = new createjs.Stage("demoCanvas");
+
+        var paddle = new createjs.Shape();
+        paddle.graphics.beginFill("#ff0000").drawRect(-10, -25, 20, 50);
+
+
+        var ball = new createjs.Shape();
+        ball.graphics.beginFill("#00FF00").drawCircle(-5,-5,10);
+
+        ball.x = ball.y = 50;
+
+
+        stage.addChild(ball);
+        stage.addChild(paddle);
+
+        var ballSpeed = 4.0;
+
+        var ballXVector = 1;
+        var ballYVector = 1;
+
+        function xHitTest(nextPos){
+            var result = false;
+            if(ball.x < paddle.x - 10
+            && nextPos >= paddle.x-10
+            && (ball.y > paddle.y -25 && ball.y < paddle.y +25)
+            ){
+                result = true;
+            }
+
+            if(ball.x > paddle.x + 10
+            && nextPos <= paddle.x+10
+            && (ball.y > paddle.y -25 && ball.y < paddle.y +25)
+            ){
+                result = true;
+            }
+            return result;
+        }
+
+        function yHitTest(nextPos){
+            var result = false;
+            if(ball.y < paddle.y - 10
+            && nextPos >= paddle.y-10
+            && (ball.x > paddle.x -25 && ball.x < paddle.x +25)
+            ){
+                result = true;
+            }
+
+            if(ball.y > paddle.y + 10
+            && nextPos <= paddle.y+10
+            && (ball.x > paddle.x -25 && ball.x < paddle.x +25)
+            ){
+                result = true;
+            }
+            return result;
+        }
+
+        function moveBall(){
+
+            var nextYPosition = ball.y + (ballSpeed*ballYVector);
+            var nextXPosition = ball.x + (ballSpeed*ballXVector);
+
+            if(nextYPosition > stage.canvas.height
+            || nextYPosition <= 0
+            ){
+                ballYVector *= -1;
+            }
+
+            ball.y =  nextYPosition;
+
+            if(nextXPosition > stage.canvas.width
+            || nextXPosition <= 0
+            || xHitTest(nextXPosition)
+            ){
+                ballXVector *= -1;
+            }
+
+            ball.x =  nextXPosition;
+
+        }
+
+        function handleTick(event) {
+            moveBall();
+            stage.update();
+        }
+
+        createjs.Ticker.framerate  = 60;
+        createjs.Ticker.addEventListener("tick", handleTick);
+
+        stage.addEventListener('stagemousemove',function(event){
+            paddle.x = event.stageX;
+            paddle.y = event.stageY;
+        })
+  </script>
+  <script src="client.js"></script>
+</body>
+
+</html>
