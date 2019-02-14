@@ -108,17 +108,18 @@ function update()
         reset();
     }
 
+    /* Player collision */
+
     if(ball.x + 10 > player.x && ball.x + 10 < player.x + 25 && ball.y >= player.y && ball.y < player.y + 150)
     {
         xSpeed *= -1;
     }
 
-    /* Player collision */
-
     if(ball.x - 10 < player2.x && ball.x - 10 > player2.x - 25 && ball.y >= player2.y && ball.y < player2.y + 150)
     {
         xSpeed *= -1;
     }
+
     /* Stop player from going out of canvas */
 
     if(player.y >= 800)

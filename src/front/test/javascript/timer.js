@@ -26,7 +26,13 @@ function getTimeRemaining(endtime) {
         if (t.total <= 0) {
             console.log('fin du timer');
             setTimeout(function endOfGame(){
-                alert("player 1 win");
+                if (playerScore.text > player2Score.text){
+                    alert("You win bro !");
+                } else if (playerScore.text < player2Score.text){
+                    alert("You lose ...");
+                } else {
+                    alert("Égalité");
+                }
             }, 500);
             clearInterval(timeinterval);
             endOfGame();
@@ -37,5 +43,5 @@ function getTimeRemaining(endtime) {
     var timeinterval = setInterval(updateClock, 1000);
   }
   
-  var deadline = new Date(Date.parse(new Date()) + 5 * 1000);
+  var deadline = new Date(Date.parse(new Date()) + 20 * 1000);
   initializeClock('clockdiv', deadline);
