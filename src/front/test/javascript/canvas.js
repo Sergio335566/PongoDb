@@ -128,6 +128,7 @@ function update()
     {
     player2.y = 800;
     }
+
     /* Check for Win */
 
     if(playerScore.text == '10'){

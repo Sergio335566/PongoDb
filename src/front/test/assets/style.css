@@ -35,6 +35,7 @@ body{
 }
 
 #clockdiv{
+  width: 100%;
 	font-family: sans-serif;
 	color: #fff;
 	display: inline-block;
