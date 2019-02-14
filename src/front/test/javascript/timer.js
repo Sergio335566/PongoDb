@@ -27,11 +27,13 @@ function getTimeRemaining(endtime) {
             console.log('fin du timer');
             setTimeout(function endOfGame(){
                 if (playerScore.text > player2Score.text){
-                    alert("You win bro !");
+                    window.location = '../test/win.html';
                 } else if (playerScore.text < player2Score.text){
-                    alert("You lose ...");
+                    window.location = '../test/loose.html';
                 } else {
-                    alert("Égalité");
+                    alert("Égalité, on rejoue ?");
+                    var deadline = new Date(Date.parse(new Date()) + 5 * 1000);
+                    initializeClock('clockdiv', deadline);
                 }
             }, 500);
             clearInterval(timeinterval);
@@ -43,5 +45,5 @@ function getTimeRemaining(endtime) {
     var timeinterval = setInterval(updateClock, 1000);
   }
 
-  var deadline = new Date(Date.parse(new Date()) + 200 * 1000);
+  var deadline = new Date(Date.parse(new Date()) + 20 * 1000);
   initializeClock('clockdiv', deadline);

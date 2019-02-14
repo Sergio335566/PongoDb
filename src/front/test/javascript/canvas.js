@@ -130,16 +130,14 @@ function update()
     }
     /* Check for Win */
 
-    if(playerScore.text == '10')
-    {
-        alert('win');
+    if(playerScore.text == '10'){
+        window.location = '../test/win.html';
     }
 
     /* Check for Game Over */
 
-    if(player2Score.text == '10')
-    {
-        alert('lose');
+    if(player2Score.text == '10'){
+        window.location = '../test/loose.html';
     }
 }
 
