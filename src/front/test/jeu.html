@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"></script>
+  <script src="http://code.createjs.com/easeljs-0.4.2.min.js"></script>
+  <script src="http://code.createjs.com/tweenjs-0.2.0.min.js"></script>
+  <script src="http://code.createjs.com/soundjs-0.2.0.min.js"></script>
+  <script src="http://code.createjs.com/preloadjs-0.1.0.min.js"></script>
+  <script src="http://code.createjs.com/movieclip-0.4.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+
+<body>
+    <!-- <div id="messageDiv"></div> -->
+    <div class="background"></div>
+    <div id="clockdiv">
+        <div>
+            <span class="minutes"></span>
+            <div class="smalltext">Minutes</div>
+        </div>
+        <div>
+            <span class="seconds"></span>
+            <div class="smalltext">Seconds</div>
+        </div>
+    </div>
+    <button id="pauseButton"></button>
+    <canvas id="demoCanvas" width="1000" height="750"></canvas>
+    
+    <script src="javascript/canvas.js"></script>
+    <script src="javascript/timer.js" ></script>
+    <script src="client.js"></script>
+</body>
+
+</html>
