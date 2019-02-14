@@ -1,0 +1,34 @@
+* {
+  margin:0;
+  padding:0;
+}
+
+body{
+  margin:0;
+  padding:0;
+  background-color: white;
+  overflow: hidden;
+}
+#demoCanvas{
+  margin: 0 auto;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 99;
+}
+
+.background{
+  background: url(fond-coin.png);
+  background-color: black;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index:-1;
+  width:100vw;
+  height:100vh;
+}
+.score{
+  z-index:1;
+  width:100vw;
+  height:100vh;
+}

@@ -3,106 +3,192 @@
 
 <head>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.slim.js"></script>
-  <script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+  <script src="http://code.createjs.com/easeljs-0.4.2.min.js"></script>
+  <script src="http://code.createjs.com/tweenjs-0.2.0.min.js"></script>
+  <script src="http://code.createjs.com/soundjs-0.2.0.min.js"></script>
+  <script src="http://code.createjs.com/preloadjs-0.1.0.min.js"></script>
+  <script src="http://code.createjs.com/movieclip-0.4.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="assets/style.css">
 </head>
 
 <body>
   <!-- <div id="messageDiv"></div> -->
-
-  <canvas id="demoCanvas" width="1000" height="700"></canvas>
+  <div class="background"></div>
+  <button id="pauseButton"></button>
+  <canvas id="demoCanvas" width="1000" height="750"></canvas>
   <script>
-  var stage = new createjs.Stage("demoCanvas");
+    var canvas = document.getElementById("demoCanvas");
+    var stage = new Stage("demoCanvas");
+    var tkr = new Object;
 
-        var paddle = new createjs.Shape();
-        paddle.graphics.beginFill("#ff0000").drawRect(-10, -25, 20, 50);
-
-
-        var ball = new createjs.Shape();
-        ball.graphics.beginFill("#00FF00").drawCircle(-5,-5,10);
-
-        ball.x = ball.y = 50;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - 5;
 
 
-        stage.addChild(ball);
-        stage.addChild(paddle);
 
-        var ballSpeed = 4.0;
+    var playerScore = new Text('0', 'bold 35px Arial', '#6600ff');
+    playerScore.x = 601;
+    playerScore.y = 60;
 
-        var ballXVector = 1;
-        var ballYVector = 1;
+    var player2Score = new Text('0', 'bold 35px Arial', '#ff2f56');
+    player2Score.x = 911;
+    player2Score.y = 60;
 
-        function xHitTest(nextPos){
-            var result = false;
-            if(ball.x < paddle.x - 10
-            && nextPos >= paddle.x-10
-            && (ball.y > paddle.y -25 && ball.y < paddle.y +25)
-            ){
-                result = true;
-            }
+    var player = new Shape();
+    player.graphics.beginFill("#6600ff").drawRect(-10, -40, 20, 150);
+    var player2 = new Shape();
+    player2.graphics.beginFill("#ff2f56").drawRect(-10, -40, 20, 150);
+    var ball = new Shape();
+    ball.graphics.beginFill("#ff2f56").drawCircle(-10, -10, 10);
+    var xSpeed = 8;
+    var ySpeed = 8;
 
-            if(ball.x > paddle.x + 10
-            && nextPos <= paddle.x+10
-            && (ball.y > paddle.y -25 && ball.y < paddle.y +25)
-            ){
-                result = true;
-            }
-            return result;
-        }
+    ball.x = 700;
+    ball.y = 300;
 
-        function yHitTest(nextPos){
-            var result = false;
-            if(ball.y < paddle.y - 10
-            && nextPos >= paddle.y-10
-            && (ball.x > paddle.x -25 && ball.x < paddle.x +25)
-            ){
-                result = true;
-            }
+    stage.addChild(ball, player, player2, playerScore, player2Score);
 
-            if(ball.y > paddle.y + 10
-            && nextPos <= paddle.y+10
-            && (ball.x > paddle.x -25 && ball.x < paddle.x +25)
-            ){
-                result = true;
-            }
-            return result;
-        }
+    player.x = 100;
+    player2.x = 1420;
 
-        function moveBall(){
+    function startGame(e) {
+      stage.onPress = null;
+      stage.onMouseMove = moveplayer;
 
-            var nextYPosition = ball.y + (ballSpeed*ballYVector);
-            var nextXPosition = ball.x + (ballSpeed*ballXVector);
+      Ticker.addListener(tkr, false);
+      tkr.tick = update;
+    }
 
-            if(nextYPosition > stage.canvas.height
-            || nextYPosition <= 0
-            ){
-                ballYVector *= -1;
-            }
+    function reset() {
+      ball.x = 750;
+      ball.y = 300;
+      player.y = 300;
+      player2.y = 300;
 
-            ball.y =  nextYPosition;
+      stage.onMouseMove = null; //stop listening to the mouse
+      Ticker.removeListener(tkr); //pause the game
+      stage.onPress = startGame;
+    }
 
-            if(nextXPosition > stage.canvas.width
-            || nextXPosition <= 0
-            || xHitTest(nextXPosition)
-            ){
-                ballXVector *= -1;
-            }
+    	/* player2 Score */
 
-            ball.x =  nextXPosition;
+    	if((ball.x) < 0)
+    	{
+    		xSpeed = -xSpeed;
+    		player2Score.text = parseInt(player2Score.text + 1);
+    		reset();
+    	}
 
-        }
+    	/* Player Score */
 
-        function handleTick(event) {
-            moveBall();
-            stage.update();
-        }
+    	if((ball.x) > 480)
+    	{
+    		xSpeed = -xSpeed;
+    		playerScore.text = parseInt(playerScore.text + 1);
+    		reset();
+    	}
 
-        createjs.Ticker.framerate  = 60;
-        createjs.Ticker.addEventListener("tick", handleTick);
 
-        stage.addEventListener('stagemousemove',function(event){
-            paddle.x = event.stageX;
-            paddle.y = event.stageY;
-        })
+    function update()
+    {
+    	// Ball Movement
+
+    	ball.x = ball.x + xSpeed;
+    	ball.y = ball.y + ySpeed;
+
+    	// // player2 Movement
+      //
+    	// if((player2.y+32) < (ball.y-14)) {
+    	// 	player2.y = player2.y + player2Speed;
+    	// }
+    	// else if((player2.y+32) > (ball.y+14)) {
+    	// 	player2.y = player2.y - player2Speed;
+    	// }
+
+    	// Wall Collision
+
+    	if((ball.y) < 0) { ySpeed = -ySpeed};//Up
+    	if((ball.y + (30)) > 720) { ySpeed = -ySpeed};
+
+      /* Player Score */
+
+    	if((ball.x) > window.innerWidth)
+    	{
+    		xSpeed = -xSpeed;
+    		playerScore.text = parseInt(playerScore.text + 1);
+    		reset();
+    	}
+    	/* player2 Score */
+
+    	if((ball.x) < 0)
+    	{
+    		xSpeed = -xSpeed;
+    		player2Score.text = parseInt(player2Score.text + 1);
+    		reset();
+    	}
+
+      if(ball.x + 10 > player.x && ball.x + 10 < player.x + 25 && ball.y >= player.y && ball.y < player.y + 150)
+    	{
+    		xSpeed *= -1;
+    	}
+
+    	/* Player collision */
+
+    	if(ball.x - 10 < player2.x && ball.x - 10 > player2.x - 25 && ball.y >= player2.y && ball.y < player2.y + 150)
+    	{
+    		xSpeed *= -1;
+    	}
+    	/* Stop player from going out of canvas */
+
+    	if(player.y >= 800)
+    	{
+    		player.y = 800;
+    	}
+
+      if(player2.y >= 800)
+      {
+        player2.y = 800;
+      }
+    	/* Check for Win */
+
+    	if(playerScore.text == '10')
+    	{
+    		alert('win');
+    	}
+
+    	/* Check for Game Over */
+
+    	if(player2Score.text == '10')
+    	{
+    		alert('lose');
+    	}
+    }
+
+    function handleTick(event) {
+      moveBall();
+      stage.update();
+    }
+
+    //         $(function () {
+    //     $("#pauseButton").text("Pause").data("paused", false).click(function () {
+    //         $(this).data("paused", !$(this).data("paused"));
+    //         if ($(this).data("paused")) {
+    //           console.log('coucou');
+    //             $(this).text("Resume");
+    //             game.paused = true;
+    //         } else {
+    //             $(this).text("Pause");
+    //             game.paused = false;
+    //         }
+    //     })
+    // });
+    Ticker.setFPS(60);
+    Ticker.addListener(stage);
+
+    function moveplayer(e) {
+      player.y = e.stageY;
+    }
   </script>
   <script src="client.js"></script>
 </body>
