@@ -5,7 +5,7 @@ var tkr = new Object;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight - 5;
 
-
+var clock = document.getElementById("clockdiv");
 
 var playerScore = new Text('0', 'bold 35px Arial', '#6600ff');
 playerScore.x = 300;
@@ -20,11 +20,11 @@ player.graphics.beginFill("#6600ff").drawRect(-10, -40, 20, 150);
 var player2 = new Shape();
 player2.graphics.beginFill("#ff2f56").drawRect(-10, -40, 20, 150);
 var ball = new Shape();
-ball.graphics.beginFill("#ff2f56").drawCircle(-10, -10, 10);
+ball.graphics.beginFill("#ff2f56").drawCircle(-3, -10, 10);
 var xSpeed = 8;
 var ySpeed = 8;
 
-ball.x = 700;
+ball.x = 800;
 ball.y = 300;
 
 stage.addChild(ball, player, player2, playerScore, player2Score);
@@ -41,10 +41,10 @@ function startGame(e) {
 }
 
 function reset() {
-    ball.x = 750;
-    ball.y = 300;
-    player.y = 300;
-    player2.y = 300;
+    ball.x = window.innerWidth/2;
+    ball.y = window.innerHeight/2 + 30;
+    player.y = window.innerHeight/2;
+    player2.y = window.innerHeight/2;
 
     stage.onMouseMove = null; //stop listening to the mouse
     Ticker.removeListener(tkr); //pause the game
@@ -108,14 +108,11 @@ function update()
         reset();
     }
 
-    /* Player collision */
-
-    if(ball.x + 10 > player.x && ball.x + 10 < player.x + 25 && ball.y >= player.y && ball.y < player.y + 150)
+    if(ball.x + 10 > player.x && ball.x + 10 < player.x + 40 && ball.y >= player.y && ball.y < player.y + 150)
     {
         xSpeed *= -1;
     }
-
-    if(ball.x - 10 < player2.x && ball.x - 10 > player2.x - 25 && ball.y >= player2.y && ball.y < player2.y + 150)
+    if(ball.x - 10 < player2.x && ball.x - 10 > player2.x - 40 && ball.y >= player2.y && ball.y < player2.y + 150)
     {
         xSpeed *= -1;
     }
